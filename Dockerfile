@@ -23,8 +23,10 @@ ARG VCFTOOLS_DIR=${SOFT}/vcftools-${VCFTOOLS_VERSION}
 
 # ============================================================
 # Build dependencies for bioinformatics tools
+# Python runtime and pip for the SNP allele python task, bash-completion - for convenience
 # ============================================================
 RUN apt-get update && apt-get --yes --no-install-recommends install \
+    bash-completion \
     build-essential \
     bzip2 \
     cmake \
@@ -35,10 +37,15 @@ RUN apt-get update && apt-get --yes --no-install-recommends install \
     libssl-dev \
     pkg-config \
     python3 \
+    python3-pip \
+    python-is-python3 \
     wget \
     zlib1g-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Python dependencies for the SNP allele task
+RUN python3 -m pip install --no-cache-dir pysam rich
 
 WORKDIR ${TMP}
 
