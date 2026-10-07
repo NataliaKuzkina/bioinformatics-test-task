@@ -13,7 +13,7 @@ Docker image based on Ubuntu 22.04 with the following bioinformatics tools built
 ```bash
 docker build -t samtools-toolkit .
 
-## Build
+## Run
 
 ```bash
 docker run --rm -it -v /path/to/data:/data samtools-toolkit
