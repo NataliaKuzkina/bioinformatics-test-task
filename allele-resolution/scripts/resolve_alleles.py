@@ -29,10 +29,11 @@ def setup_logging(log_file):
                         handlers=[logging.FileHandler(log_file, mode="w"), logging.StreamHandler(sys.stdout)])
 
 
-def handle_wrong_line(message, skip_invalid, warnings):
+def handle_wrong_line(message, skip_invalid, errors):
     if not skip_invalid:
         raise ValueError(message)
-    warnings.append(message)
+    errors.append(message)
+
 
 def check_header(header):
     if header.rstrip("\r\n").split("\t") != EXPECTED_HEADER:
@@ -71,6 +72,7 @@ def get_fasta(chrom, reference_dir, fasta_files):
 def process_variants(args):
     fasta_files = {}
     warnings = {"flipped": [], "unknown": [], "wrong": []}
+    errors = []
     counts = {"total": 0, "converted": 0, "flipped": 0, "unknown": 0, "wrong": 0}
 
     try:
@@ -98,7 +100,8 @@ def process_variants(args):
                             raise ValueError(f"Position outside chromosome at line {line_number}: {chrom}:{pos}")
                     except (ValueError, KeyError) as error:
                         counts["wrong"] += 1
-                        handle_wrong_line(str(error), args.skip_invalid, warnings["wrong"])
+                        message = f"Line {line_number}: {error}; row: {line.rstrip()}"
+                        handle_wrong_line(message, args.skip_invalid, errors)
                         continue
 
                     counts["total"] += 1
@@ -121,10 +124,11 @@ def process_variants(args):
             fasta.close()
 
     for category, label in [("flipped", "Not recognized (probably strand-flipped)"),
-                            ("unknown", "Not recognized (unknown reason)"),
-                            ("wrong", "Wrong line skipped")]:
+                            ("unknown", "Not recognized (unknown reason)")]:
         for message in warnings[category]:
             logging.warning("%s: %s", label, message)
+    for message in errors:
+        logging.error("Wrong line skipped: %s", message)
 
     return counts
 
@@ -141,7 +145,7 @@ def main():
         if not os.path.isdir(args.reference_dir):
             raise FileNotFoundError(f"Reference directory does not exist: {args.reference_dir}")
         counts = process_variants(args)
-    except (FileNotFoundError, ValueError, OSError, pysam.PysamError) as error:
+    except Exception as error:
         logging.error("%s", error)
         sys.exit(1)
 
