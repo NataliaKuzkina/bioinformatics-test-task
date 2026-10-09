@@ -6,21 +6,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV SOFT "/soft"
 ENV TMP "/tmp"
 
-ARG LIBDEFLATE_VERSION=1.26
-ARG LIBDEFLATE_DIR=${SOFT}/libdeflate-${LIBDEFLATE_VERSION}
-
-ARG HTSLIB_VERSION=1.24
-ARG HTSLIB_DIR=${SOFT}/htslib-${HTSLIB_VERSION}
-
-ARG SAMTOOLS_VERSION=1.24
-ARG SAMTOOLS_DIR=${SOFT}/samtools-${SAMTOOLS_VERSION}
-
-ARG BCFTOOLS_VERSION=1.24
-ARG BCFTOOLS_DIR=${SOFT}/bcftools-${BCFTOOLS_VERSION}
-
-ARG VCFTOOLS_VERSION=0.1.17
-ARG VCFTOOLS_DIR=${SOFT}/vcftools-${VCFTOOLS_VERSION}
-
 # ============================================================
 # Build dependencies for bioinformatics tools
 # Python runtime and pip for the SNP allele python task, bash-completion - for convenience
@@ -53,6 +38,9 @@ WORKDIR ${TMP}
 # Libdeflate 1.26
 # Release date: 22 Aug 2026
 # ============================================================
+ARG LIBDEFLATE_VERSION=1.26
+ARG LIBDEFLATE_DIR=${SOFT}/libdeflate-${LIBDEFLATE_VERSION}
+
 RUN wget "https://github.com/ebiggers/libdeflate/releases/download/v${LIBDEFLATE_VERSION}/libdeflate-${LIBDEFLATE_VERSION}.tar.gz" \
         -O libdeflate-${LIBDEFLATE_VERSION}.tar.gz && \
     tar -xzf libdeflate-${LIBDEFLATE_VERSION}.tar.gz && \
@@ -69,6 +57,9 @@ RUN wget "https://github.com/ebiggers/libdeflate/releases/download/v${LIBDEFLATE
 # HTSlib 1.24
 # Release date: 9 July 2026
 # ============================================================
+ARG HTSLIB_VERSION=1.24
+ARG HTSLIB_DIR=${SOFT}/htslib-${HTSLIB_VERSION}
+
 RUN wget "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2" \
         -O htslib-${HTSLIB_VERSION}.tar.bz2 && \
     tar -xjf htslib-${HTSLIB_VERSION}.tar.bz2 && \
@@ -85,6 +76,8 @@ RUN wget "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}
 # Samtools 1.24
 # Release date: 9 July 2026
 # ============================================================
+ARG SAMTOOLS_VERSION=1.24
+ARG SAMTOOLS_DIR=${SOFT}/samtools-${SAMTOOLS_VERSION}
 
 RUN wget "https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2" \
         -O samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
@@ -104,6 +97,8 @@ RUN wget "https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERS
 # BCFtools 1.24
 # Release date: 9 July 2026
 # ============================================================
+ARG BCFTOOLS_VERSION=1.24
+ARG BCFTOOLS_DIR=${SOFT}/bcftools-${BCFTOOLS_VERSION}
 
 RUN wget "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2" \
         -O bcftools-${BCFTOOLS_VERSION}.tar.bz2 && \
@@ -121,6 +116,9 @@ RUN wget "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERS
 # VCFtools 0.1.17
 # Release date: 15 May 2025
 # ============================================================
+ARG VCFTOOLS_VERSION=0.1.17
+ARG VCFTOOLS_DIR=${SOFT}/vcftools-${VCFTOOLS_VERSION}
+
 RUN wget "https://github.com/vcftools/vcftools/releases/download/v${VCFTOOLS_VERSION}/vcftools-${VCFTOOLS_VERSION}.tar.gz" \
         -O vcftools-${VCFTOOLS_VERSION}.tar.gz && \
     tar -xzf vcftools-${VCFTOOLS_VERSION}.tar.gz && \
@@ -150,6 +148,11 @@ ENV TABIX="${HTSLIB_DIR}/bin/tabix"
 ENV HTSFILE="${HTSLIB_DIR}/bin/htsfile"
 ENV LIBDEFLATEGZIP="${LIBDEFLATE_DIR}/bin/libdeflate-gzip"
 
+# ============================================================
+# SNP allele resolution scripts
+# ============================================================
+COPY allele-resolution/scripts/ /scripts/
+RUN chmod +x /scripts/*
 
 WORKDIR /data
 
