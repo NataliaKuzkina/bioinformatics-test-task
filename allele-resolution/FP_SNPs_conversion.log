@@ -1,0 +1,17 @@
+2026-10-09 14:11:59,007 [INFO] Starting allele conversion
+2026-10-09 14:11:59,008 [INFO] Input: FP_SNPs_10k_GB38_twoAllelsFormat.tsv; Output: test_output_3.tsv; Reference: ref/GRCh38.d1.vd1_mainChr/sepChrs/
+2026-10-09 14:12:04,325 [WARNING] Not recognized (probably strand-flipped): chr1:145899155 rs2274617 allele1=T allele2=C reference=G
+2026-10-09 14:12:04,325 [WARNING] Not recognized (probably strand-flipped): chr10:47420743 rs4342964 allele1=T allele2=C reference=G
+2026-10-09 14:12:04,326 [WARNING] Not recognized (probably strand-flipped): chr10:47320207 rs11204215 allele1=C allele2=A reference=T
+2026-10-09 14:12:04,326 [WARNING] Not recognized (probably strand-flipped): chr10:47268342 rs12414155 allele1=T allele2=C reference=A
+2026-10-09 14:12:04,326 [WARNING] Not recognized (probably strand-flipped): chr10:47099482 rs2790937 allele1=G allele2=A reference=T
+2026-10-09 14:12:04,326 [WARNING] Not recognized (probably strand-flipped): chr10:46031829 rs10994675 allele1=A allele2=G reference=C
+2026-10-09 14:12:04,327 [WARNING] Not recognized (probably strand-flipped): chr11:54678670 rs527464 allele1=C allele2=T reference=G
+2026-10-09 14:12:04,327 [WARNING] Not recognized (probably strand-flipped): chr15:22907410 rs7174982 allele1=T allele2=C reference=G
+2026-10-09 14:12:04,327 [WARNING] Not recognized (probably strand-flipped): chr15:22832212 rs4778334 allele1=T allele2=C reference=A
+2026-10-09 14:12:04,327 [INFO] Conversion finished
+2026-10-09 14:12:04,328 [INFO] Total valid variants: 10000
+2026-10-09 14:12:04,328 [INFO] Converted variants: 9991
+2026-10-09 14:12:04,328 [INFO] Not recognized (probably strand-flipped): 9
+2026-10-09 14:12:04,328 [INFO] Not recognized (unknown reason): 0
+2026-10-09 14:12:04,328 [INFO] Wrong lines: 0
