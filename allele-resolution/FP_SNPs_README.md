@@ -72,23 +72,7 @@ The script:
 4. extracts chromosomes 1–22, X, Y and M into separate FASTA files;
 5. creates a `.fai` index for each chromosome FASTA.
 
-The resulting chromosome reference files are stored in:
-
-```text
-sepChrs/
-```
-
-For example:
-
-```text
-sepChrs/chr1.fa
-sepChrs/chr1.fa.fai
-sepChrs/chr2.fa
-sepChrs/chr2.fa.fai
-...
-sepChrs/chrX.fa
-sepChrs/chrX.fa.fai
-```
+The resulting chromosome reference files are stored in sepChrs/
 
 `samtools` is provided by the Docker image described in the repository Dockerfile.
 
@@ -127,8 +111,8 @@ Example:
 
 ```bash
 python resolve_alleles.py \
-    --input  /path/to/FP_SNPs_10k_GB38_twoAllelsFormat.tsv \
-    --output  /path/to/FP_SNPs_10k_GB38_REF_ALT.tsv \
+    --input FP_SNPs_10k_GB38_twoAllelsFormat.tsv \
+    --output FP_SNPs_10k_GB38_REF_ALT.tsv \
     --reference /path/to/GRCh38.d1.vd1_mainChr/sepChrs
 ```
 
@@ -139,27 +123,20 @@ python resolve_alleles.py --help
 ```
 
 to see all available command-line options.
+## 4. Example: checking variants against dbSNP
 
-## 4. Docker
+`check_dbsnp.sh` provides an example of checking SNP identifiers and reference alleles against a dbSNP VCF, particularly for variants reported as possibly strand-flipped.
 
-The required bioinformatics tools and Python dependencies are installed in the repository Docker image.
+The dbSNP VCF must be downloaded separately before running the script.
 
-Build the image:
-
-```bash
-docker build -t samtools-toolkit .
-```
-
-Run it with the working directory and reference mounted into the container:
+Example using the NCBI GRCh38 dbSNP release (`GCF_000001405.40.gz`):
 
 ```bash
-docker run --rm -it \
-    -v /path/to/data:/data \
-    -v /path/to/reference:/ref \
-    samtools-toolkit
+./scripts/check_dbsnp.sh GCF_000001405.40.gz strand_flip_rs.txt
 ```
 
-The Python task uses `pysam` to access indexed FASTA files and `rich` to display progress.
+Here, `strand_flip_rs.txt` is a text file containing one rsID per line. The script uses `bcftools` to print matching chromosome, position, ID, REF and ALT values.
+
 
 ## Workflow
 
@@ -178,6 +155,7 @@ FP_SNPs_10k_GB38_twoAllelsFormat.tsv
    | resolve_alleles.py + GRCh38
    v
 FP_SNPs_10k_GB38_REF_ALT.tsv
+ { |
+   v check flipped variants with check_dbsnp.sh }
+   
 ```
-
-The GRCh38 reference required by the Python step is prepared independently with `prepare_reference.sh`. /path/to /path/to
