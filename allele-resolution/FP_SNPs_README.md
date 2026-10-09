@@ -107,13 +107,13 @@ chr1      12345  rs123  A      G
 
 The script accepts named command-line arguments for the input file, output file and reference directory.
 
-Example:
+Example (from running docker):
 
 ```bash
-python resolve_alleles.py \
-    --input FP_SNPs_10k_GB38_twoAllelsFormat.tsv \
-    --output FP_SNPs_10k_GB38_REF_ALT.tsv \
-    --reference /path/to/GRCh38.d1.vd1_mainChr/sepChrs
+python /scripts/resolve_alleles.py
+    --i /path/to/FP_SNPs_10k_GB38_twoAllelsFormat.tsv \
+    -o /path/to/FP_SNPs_10k_GB38_REF_ALT.tsv \
+    -r /path/to/GRCh38.d1.vd1_mainChr/sepChrs/
 ```
 
 Use:
